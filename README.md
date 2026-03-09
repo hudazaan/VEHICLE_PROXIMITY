@@ -70,7 +70,7 @@ This project uses an optimized **OpenVINO FP16** version of YOLOv8n. To keep the
 
 The system utilizes the **Pinhole Camera Model** for distance estimation:
 
-                    $$d = \frac{f \cdot H}{p}$$
+                    **$d$ = $(p . H) / p$**
 
 * **$d$ (Distance):** The estimated distance from the camera to the object in meters.
 * **$f$ (Focal Length):** A constant representing the camera’s focal length in pixels, calibrated for the IP Webcam lens.
