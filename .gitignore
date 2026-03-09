@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Environments
+proxi_venv/
+env/
+venv/
+.env
+
+# Kept folder structure not the files
+logs/*.csv
+logs/*.db
+logs/*.png
+!logs/.gitkeep
+logs/adas_incidents.db
+logs/forensic_report.csv
+logs/performance_graph.png
+logs/session_data.csv
+
+# AI Models (large files set to local)
+models/*.xml
+models/*.bin
+models/*.onnx
+models/*.pt
+*.pt
+yolov8n.pt
+models/yolov8n_openvino_model/*.bin
+models/yolov8n_openvino_model/*.xml
+
+# Temporary/Error Logs
+kernel.errors.txt
+
+# Calibration Settings
+calibration_points.npy
+
+# OS generated files
+.DS_Store
+.vscode/
+Thumbs.db
