@@ -2,10 +2,11 @@
 **Advanced Driver Assistance System with OpenVINO Optimization & Forensic Logging**
 
 ## 📌 Project Overview
-This project is an AI-powered This project presents a real-time Advanced Driver Assistance System (ADAS) designed to enhance road safety through AI-based vehicle proximity and pre-collision detection by effectively serving as a low-cost safety tool for older vehicle models. It utilizes a smartphone's camera as a high-definition webcam to capture live road data. By leveraging the YOLOv8 architecture (optimized via the Intel OpenVINO toolkit) and Mobile-to-Server video stream integration, the system detects critical road entities such as vehicles and pedestrians with high precision and low latency on consumer-grade hardware. The system incorporates Dynamic Spatial Calibration and Geometric Distance Estimation to identify collision risks. Significant features of this work are the Auditory/visual alerts triggered when an object enters the "High Proximity" zones and a Data Persistence Layer utilizing SQLite to log high-risk incidents, providing a "Digital Black Box" capability for post-event forensic analysis.
+This project presents a real-time Advanced Driver Assistance System (ADAS) designed to enhance road safety through AI-based vehicle proximity and pre-collision detection by effectively serving as a low-cost safety tool for older vehicle models. It utilizes a smartphone's camera as a high-definition webcam to capture live road data. By leveraging the YOLOv8 architecture (optimized via the Intel OpenVINO toolkit) and Mobile-to-Server video stream integration, the system detects critical road entities such as vehicles and pedestrians with high precision and low latency on consumer-grade hardware. The system incorporates Dynamic Spatial Calibration and Geometric Distance Estimation to identify collision risks. Significant features of this work are the Auditory/visual alerts triggered when an object enters the "High Proximity" zones and a Data Persistence Layer utilizing SQLite to log high-risk incidents, providing a "Digital Black Box" capability for post-event forensic analysis.
 
 
 ### **Core Features**
+
 * **Intelligent Object Filtering:** Optimized to specifically track Persons, Cars, Motorcycles, Buses, and Trucks while filtering out irrelevant background noise.
 * **Dynamic Spatial Calibration:** Interactive mouse-driven GUI allowing users to define the "Danger Zone" (ROI) trapezoid based on specific camera mounting angles.
 * **Real-Time Telemetry:**  Real-time distance calculation in meters based on object pixel height and camera focal length.
@@ -18,12 +19,45 @@ This project is an AI-powered This project presents a real-time Advanced Driver 
 ---
 
 ## ⚙️ Technical Stack
+
 * **AI Engine:** Ultralytics YOLOv8 (OpenVINO FP16 Quantized)
 * **Inference:** Intel OpenVINO Toolkit
 * **Computer Vision:** OpenCV (Spatial Geometry & HUD)
 * **Data Science:** Pandas (Data Wrangling), Matplotlib (Performance Plotting)
 * **Database:** SQLite3 (Relational Incident Telemetry)
 * **Protocol:** IP Webcam (HTTP/JPEG Stream)
+
+---
+
+## 📊 Mathematical Foundations
+
+The system utilizes the **Pinhole Camera Model** for distance estimation:
+
+                          d = (f . H) / p
+
+* **$d$ (Distance):** Estimated distance from the camera to the object in meters.
+* **$f$ (Focal Length):** Calibrated camera constant in pixels> 
+* **$H$ (Real-World Height):** The assumed physical height of the object (e.g., 1.7m for a person or 1.5m for a car).
+* **$p$ (Pixel Height):** The vertical height of the detection bounding box.
+
+---
+
+## 📈 Performance & Accuracy
+
+Through Intel OpenVINO FP16 Quantization, the model achieves a significant performance leap over standard inference methods.
+
+* **Optimization Impact:** Achieved a ~70% reduction in latency compared to the original .pt model (which averaged 5–8 FPS). 
+* **Inference Latency:** 35ms – 47ms per frame (Hardware: Consumer-grade CPU). 
+* **Real-Time Throughput:** 21 FPS – 28 FPS. 
+* **Distance Accuracy:** Validated via iterative calibration of the Pinhole Camera Model, achieving a functional Mean Absolute Error (MAE) of < 10% within the critical safety range (2m–15m). Accuracy was verified against static ground-truth markers. 
+
+### **Drawbacks**
+
+While the system maintains high functional reliability, users should account for standard computer vision variances: 
+
+* **Bounding Box Jitter:** Small pixel fluctuations in the AI bounding box affect the denominator ($p$), leading to minor distance variances. 
+* **Vehicle Pitch & Roll:** Road bumps or braking can alter the camera angle relative to the horizon, slightly distorting the perceived object height. 
+* **Pixel Resolution Constraints:** At 640x480 resolution, distant objects occupy fewer pixels; a 1-pixel detection error at 20m is mathematically more significant than at 2m. 
 
 ---
 
@@ -66,17 +100,5 @@ This project uses an optimized **OpenVINO FP16** version of YOLOv8n. To keep the
 
 ---
 
-## 📊 Mathematical Foundations
-
-The system utilizes the **Pinhole Camera Model** for distance estimation:
-
-                          d = (p . H) / p
-
-* **$d$ (Distance):** The estimated distance from the camera to the object in meters.
-* **$f$ (Focal Length):** A constant representing the camera’s focal length in pixels, calibrated for the IP Webcam lens.
-* **$H$ (Real-World Height):** The assumed physical height of the object (e.g., 1.7m for a person or 1.5m for a car).
-* **$p$ (Pixel Height):** The vertical height of the bounding box as detected by the AI in the current frame.
-
----
 
 ### Made by Huda Naaz  
